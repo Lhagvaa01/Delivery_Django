@@ -116,7 +116,7 @@ def filter_history(request):
                 price = float(price)
                 histories = histories.filter(historyproduct__product__itemPrice=price)
             except ValueError:
-                return Response({'message': 'Invalid price format'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Invalid price formatc'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = HistorySerializer(histories.distinct(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
