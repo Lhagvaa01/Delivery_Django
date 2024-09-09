@@ -18,5 +18,10 @@
             "src": "/(.*)",
             "dest": "djangoProject/wsgi.py"
         }
-    ]
+    ],
+    "env": {
+    "MYSQLCLIENT_VERSION": "1.4.0",
+    "MYSQLCLIENT_DEPENDENCIES": "libmysqlclient-dev libssl-dev",
+    "MARIADB_DEPENDENCIES": "libmariadb-dev-compat libssl-dev"
+  }
 }
