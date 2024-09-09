@@ -80,6 +80,21 @@ TEMPLATES = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
+
 # WSGI_APPLICATION = 'djangoProject.wsgi.application'
 # application = get_wsgi_application()
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
