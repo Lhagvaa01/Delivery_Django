@@ -1,12 +1,8 @@
 {
   "builds": [
     {
-      "src": "djangoProject/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.9"
-      }
+      "src": "Dockerfile",
+      "use": "@vercel/docker"
     },
     {
       "src": "build_files.sh",
@@ -23,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "djangoProject/wsgi.py"
+      "dest": "/"
     }
   ]
 }
