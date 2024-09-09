@@ -63,6 +63,24 @@ def get_product_info(request):
     serializer = InfoProductSerializer(products, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class InfoProductSearchView(generics.ListAPIView):
+    serializer_class = InfoProductSerializer
+
+    def get_queryset(self):
+        queryset = InfoProduct.objects.all()
+        item_code = self.request.query_params.get('itemCode', None)
+        item_name = self.request.query_params.get('itemName', None)
+
+        if item_code is not None:
+            queryset = queryset.filter(itemCode=item_code)
+
+        if item_name is not None:
+            queryset = queryset.filter(itemName__icontains=item_name)
+
+        return queryset
+
+
 # Get InfoSector Information
 @api_view(['GET'])
 def get_info_sector_info(request):
@@ -116,7 +134,7 @@ def filter_history(request):
                 price = float(price)
                 histories = histories.filter(historyproduct__product__itemPrice=price)
             except ValueError:
-                return Response({'message': 'Invalid price formatc'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Invalid price format'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = HistorySerializer(histories.distinct(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

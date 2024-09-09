@@ -11,6 +11,7 @@ urlpatterns = [
     path('info-sectors/', get_info_sector_info, name='get_info_sector_info'),
     path('history/', HistoryView.as_view(), name='history_view'),
     path('filter_history/', filter_history, name='filter_products'),
+    path('product/search/', InfoProductSearchView.as_view(), name='product-search'),
      
 ]
  
