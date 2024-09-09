@@ -1,27 +1,24 @@
-# Use Python 3.9 as the base image
-FROM python:3.9-slim
+# Use the official Python image from the Docker Hub
+FROM python:3.12-slim
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
 # Install system dependencies for mysqlclient
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     default-libmysqlclient-dev \
-    gcc \
-    python3-dev
+    build-essential
 
-# Copy project files
-COPY . /app
+# Copy the requirements file and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install project dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Copy the rest of the application code
+COPY . .
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
-# Expose port 8000
+# Expose the port the app runs on
 EXPOSE 8000
 
-# Run the Django app using gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "djangoProject.wsgi:application"]
+# Define the command to run the app
+CMD ["gunicorn", "djangoProject.wsgi:application", "--bind", "0.0.0.0:8000"]
