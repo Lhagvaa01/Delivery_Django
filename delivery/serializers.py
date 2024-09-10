@@ -19,21 +19,21 @@ class InfoProductSerializer(serializers.ModelSerializer):
 
 
 class HistoryProductSerializer(serializers.ModelSerializer):
+    product = InfoProductSerializer(read_only=True)
     class Meta:
         model = HistoryProduct
         fields = ['pk', 'product', 'quantity']
 
 
 class HistorySerializer(serializers.ModelSerializer):
-    UserPk = serializers.StringRelatedField()  # Show the username instead of the UserPk id
-    infoOutSector = serializers.StringRelatedField()  # Show the sector name for infoOutSector
-    infoToSector = serializers.StringRelatedField()
-    history_products = HistoryProductSerializer(many=True, write_only=True)  # Nested serializer for HistoryProduct
+    UserPk = serializers.StringRelatedField()  # Display the username for UserPk
+    infoOutSector = serializers.StringRelatedField()  # Display the sector name for infoOutSector
+    infoToSector = serializers.StringRelatedField()  # Display the sector name for infoToSector
+    history_products = HistoryProductSerializer(source='historyproduct_set', many=True, read_only=True)  # Include related products
 
     class Meta:
         model = History
-        fields = ['pk', 'UserPk', 'infoOutSector', 'infoToSector', 'totalPrice', 'description', 'isIncome',
-                  'createdDate', 'history_products']
+        fields = ['pk', 'UserPk', 'infoOutSector', 'infoToSector', 'totalPrice', 'description', 'isIncome', 'createdDate', 'history_products']
 
     def create(self, validated_data):
         history_products_data = validated_data.pop('history_products', [])

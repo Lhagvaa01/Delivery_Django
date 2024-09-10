@@ -118,27 +118,16 @@ class HistoryView(APIView):
 @api_view(['GET', 'POST'])
 def filter_history(request):
     if request.method == 'GET':
-        name = request.GET.get('name')
-        code = request.GET.get('code')
-        price = request.GET.get('price')
+        pk = request.GET.get('pk')
 
         # Filter History based on related InfoProduct fields
         histories = History.objects.all()
 
-        if name:
-            histories = histories.filter(historyproduct__product__itemName__icontains=name)
-        if code:
-            histories = histories.filter(historyproduct__product__itemCode=code)
-        if price:
-            try:
-                price = float(price)
-                histories = histories.filter(historyproduct__product__itemPrice=price)
-            except ValueError:
-                return Response({'message': 'Invalid price format'}, status=status.HTTP_400_BAD_REQUEST)
+        if pk:
+            histories = histories.filter(historyproduct__history__pk=pk).distinct()
 
-        serializer = HistorySerializer(histories.distinct(), many=True)
+        serializer = HistorySerializer(histories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
-        # You can add POST handling logic if you want to accept filter criteria in POST requests
         return Response({'message': 'POST method is not implemented for filtering'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
