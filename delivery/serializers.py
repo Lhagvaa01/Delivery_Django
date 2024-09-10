@@ -25,6 +25,9 @@ class HistoryProductSerializer(serializers.ModelSerializer):
 
 
 class HistorySerializer(serializers.ModelSerializer):
+    UserPk = serializers.StringRelatedField()  # Show the username instead of the UserPk id
+    infoOutSector = serializers.StringRelatedField()  # Show the sector name for infoOutSector
+    infoToSector = serializers.StringRelatedField()
     history_products = HistoryProductSerializer(many=True, write_only=True)  # Nested serializer for HistoryProduct
 
     class Meta:
