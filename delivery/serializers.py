@@ -19,7 +19,7 @@ class InfoProductSerializer(serializers.ModelSerializer):
 
 
 class HistoryProductSerializer(serializers.ModelSerializer):
-    product = InfoProductSerializer(read_only=True)
+    # product = InfoProductSerializer(read_only=True)
     class Meta:
         model = HistoryProduct
         fields = ['pk', 'product', 'quantity']
